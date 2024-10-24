@@ -35,6 +35,6 @@
         "webpack-dev-server": "^5.1.0"
     },
     "dependencies": {
-        "ws": "^8.8.0"
+        "ws": "^8.18.0"
     }
 }
