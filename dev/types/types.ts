@@ -110,8 +110,10 @@ export enum MessageType {
   FINISH = 'finish',
 }
 
+type Payload = LoginRequest | LoginResponse;
+
 export type Message = {
   type: MessageType;
-  data: LoginRequest;
+  data: string;
   id: string;
 };
