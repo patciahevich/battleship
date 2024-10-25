@@ -1,44 +1,29 @@
 import { dataBase } from '../dataBase/dataBase';
-import { LoginRequest, LoginResponse, Message } from '../types/types';
+import { MessageType } from '../types/types';
 
-type PlayerData = {
-  name: string;
-  password: string;
-};
-
-export type DataBase = {
-  players: PlayerData[];
-};
-
-export function login(data: string) {
-  const { name, password } = JSON.parse(data);
-
-  let loginResponse: LoginResponse;
+export function login(id: string, name: string, password: string) {
   const player = dataBase.players.find((player) => player.name === name);
 
   if (player) {
-    player.password === password
-      ? (loginResponse = {
-          name,
-          index: 1,
-          error: false,
-          errorText: '',
-        })
-      : (loginResponse = {
-          name,
-          index: 1,
-          error: true,
-          errorText: 'incorrect password',
-        });
+    return player.password === password ? true : false;
   } else {
-    dataBase.players.push({ name, password });
-    loginResponse = {
-      name,
-      index: 1,
-      error: false,
-      errorText: '',
-    };
+    dataBase.players.push({ id, name, password });
+    return true;
   }
+}
 
-  return JSON.stringify(loginResponse);
+export function createLoginResponse(isLogin: boolean, name: string) {
+  const payload = {
+    name,
+    index: 0,
+    error: !isLogin,
+    errorText: isLogin ? '' : 'Invalid password',
+  };
+  const response = {
+    type: MessageType.REG,
+    data: JSON.stringify(payload),
+    id: 0,
+  };
+
+  return JSON.stringify(response);
 }

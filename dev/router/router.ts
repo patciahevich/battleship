@@ -1,15 +1,17 @@
-import { randomUUID } from 'crypto';
-import { login } from '../login/login';
 import { Message, MessageType } from '../types/types';
+import { loginController, roomsController } from '../controller/controller';
 
-export function router(message: Message) {
+export function router(id: string, message: Message) {
+  // message.data = string
   switch (message.type) {
     case MessageType.REG:
-      const response: Message = {
-        type: MessageType.REG,
-        data: login(message.data),
-        id: randomUUID(),
-      };
-      return JSON.stringify(response);
+      loginController(id, message.data);
+      break;
+    case MessageType.CREATE_ROOM:
+      roomsController(id, 'create');
+      break;
+
+    case MessageType.ADD_USER_TO_ROOM:
+      roomsController(id, 'update', message.data);
   }
 }

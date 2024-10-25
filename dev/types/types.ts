@@ -20,21 +20,11 @@ type Winner = {
 type Winners = Winner[];
 
 // room
-type IndexRoom = number | string;
+export type IndexRoom = { indexRoom: string | number };
 
-type CreateGameResponse = {
+export type CreateGameResponse = {
   idGame: number | string;
   idPlayer: number | string;
-};
-
-type RoomUser = {
-  name: string;
-  index: number | string;
-};
-
-type UpdateRoomState = {
-  roomId: string | number;
-  roomUsers: RoomUser[];
 };
 
 //ships
@@ -110,7 +100,7 @@ export enum MessageType {
   FINISH = 'finish',
 }
 
-type Payload = LoginRequest | LoginResponse;
+type Payload = LoginRequest | LoginResponse | IndexRoom;
 
 export type Message = {
   type: MessageType;
