@@ -1,4 +1,4 @@
-import { Ship } from '../types/types';
+import Ship from '../ships/ship';
 
 export type PlayerData = {
   name: string;

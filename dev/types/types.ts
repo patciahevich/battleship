@@ -1,3 +1,5 @@
+import Ship from '../ships/ship';
+
 // login
 export type LoginRequest = {
   name: string;
@@ -28,13 +30,14 @@ export type CreateGameResponse = {
 };
 
 //ships
-type ShipType = 'small' | 'medium' | 'large' | 'huge';
-type Position = {
+export type ShipType = 'small' | 'medium' | 'large' | 'huge';
+
+export type Position = {
   x: number;
   y: number;
 };
 
-export type Ship = {
+export type ShipData = {
   position: Position;
   direction: boolean;
   length: number;
@@ -55,9 +58,9 @@ type StartGamePayload = {
 
 //game
 
-type AttackStatus = 'miss' | 'killed' | 'shot';
+export type AttackStatus = 'miss' | 'killed' | 'shot';
 
-type AttackRequest = {
+export type AttackRequest = {
   gameId: number | string;
   x: number;
   y: number;

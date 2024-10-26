@@ -4,6 +4,7 @@ import {
   roomsController,
   shipsController,
 } from '../controller/appController';
+import { gameController } from '../controller/gameController';
 
 export function router(id: string, message: Message) {
   // message.data = string
@@ -21,5 +22,9 @@ export function router(id: string, message: Message) {
 
     case MessageType.ADD_SHIPS:
       shipsController(message.data);
+      break;
+
+    case MessageType.ATTACK:
+      gameController(message.data);
   }
 }

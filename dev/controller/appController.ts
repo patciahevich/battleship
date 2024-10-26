@@ -13,7 +13,7 @@ import {
   addShips,
   checkReadyForBattle,
   createStartGameResponse,
-} from '../ships/ships';
+} from '../ships/helpers';
 import { switchTurn, turnResponse } from '../game/game';
 
 export function loginController(clientId: string, data: string) {

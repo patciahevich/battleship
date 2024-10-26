@@ -1,5 +1,6 @@
 import { MessageType, ShipsRequest } from '../types/types';
 import { dataBase, Game, GamePlayer } from '../dataBase/dataBase';
+import Ship from './ship';
 
 export function addShips(data: string) {
   const { gameId, ships, indexPlayer } = JSON.parse(data) as ShipsRequest;
@@ -12,7 +13,7 @@ export function addShips(data: string) {
   const player = currentGame.players.find(
     (player) => player.id === indexPlayer,
   );
-  player && (player.ships = ships);
+  player && (player.ships = ships.map((ship) => new Ship(ship)));
 
   return currentGame;
 }
@@ -37,8 +38,3 @@ export function createStartGameResponse(player: GamePlayer) {
 
   return JSON.stringify(response);
 }
-
-// export function startGame(game: Game) {
-//   const { gameId, players } = game;
-//   players.forEach((player) => {});
-// }
