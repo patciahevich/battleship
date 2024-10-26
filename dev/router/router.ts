@@ -1,5 +1,9 @@
 import { Message, MessageType } from '../types/types';
-import { loginController, roomsController } from '../controller/controller';
+import {
+  loginController,
+  roomsController,
+  shipsController,
+} from '../controller/controller';
 
 export function router(id: string, message: Message) {
   // message.data = string
@@ -13,5 +17,9 @@ export function router(id: string, message: Message) {
 
     case MessageType.ADD_USER_TO_ROOM:
       roomsController(id, 'update', message.data);
+      break;
+
+    case MessageType.ADD_SHIPS:
+      shipsController(message.data);
   }
 }

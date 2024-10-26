@@ -40,10 +40,7 @@ export function addUserToRoom(id: string, data: string) {
     (room) => room.roomId === indexRoom,
   );
 
-  console.log(currentRoomIndex);
-
   if (currentRoomIndex === -1) {
-    // message
     return;
   }
 

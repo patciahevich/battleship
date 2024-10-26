@@ -1,4 +1,4 @@
-import { dataBase } from 'dataBase/dataBase';
+import { dataBase } from '../dataBase/dataBase';
 import { clients } from '../clients/clients';
 import { createLoginResponse, login } from '../login/login';
 import {
@@ -8,6 +8,7 @@ import {
   updateRoomsResponse,
 } from '../room/room';
 import { randomUUID } from 'crypto';
+import { addShips, checkReadyForBattle } from '../ships/ships';
 
 export function loginController(clientId: string, data: string) {
   const client = clients.get(clientId);
@@ -59,7 +60,10 @@ export function roomsController(
     const firstPlayerId = randomUUID();
     const secondPlayerId = randomUUID();
 
-    dataBase.games.push({ gameId, firstPlayerId, secondPlayerId });
+    dataBase.games.push({
+      gameId,
+      players: [{ id: firstPlayerId }, { id: secondPlayerId }],
+    });
 
     firstPlayer.ws.send(createStartGameResponse(gameId, firstPlayerId));
     secondPlayer.ws.send(createStartGameResponse(gameId, secondPlayerId));
@@ -69,5 +73,15 @@ export function roomsController(
         client.ws.send(updateRoomsResponse());
       }
     });
+  }
+}
+
+export function shipsController(data: string) {
+  const currentGame = addShips(data);
+  const isReady = currentGame && checkReadyForBattle(currentGame);
+
+  if (isReady) {
+    console.log('ready');
+    // start battle
   }
 }

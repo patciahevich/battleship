@@ -1,3 +1,5 @@
+import { Ship } from '../types/types';
+
 export type PlayerData = {
   name: string;
   password: string;
@@ -14,10 +16,14 @@ export type Room = {
   roomUsers: RoomUser[];
 };
 
+type GamePlayer = {
+  id: string;
+  ships?: Ship[];
+};
+
 export type Game = {
   gameId: string;
-  firstPlayerId: string;
-  secondPlayerId: string;
+  players: GamePlayer[];
 };
 
 export type DataBase = {

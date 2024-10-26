@@ -34,14 +34,14 @@ type Position = {
   y: number;
 };
 
-type Ship = {
+export type Ship = {
   position: Position;
   direction: boolean;
   length: number;
   type: ShipType;
 };
 
-type ShipsRequest = {
+export type ShipsRequest = {
   gameId: string | number;
   ships: Ship[];
   indexPlayer: number | string;
