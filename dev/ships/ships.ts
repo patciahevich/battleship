@@ -1,5 +1,5 @@
-import { ShipsRequest } from '../types/types';
-import { dataBase, Game } from '../dataBase/dataBase';
+import { MessageType, ShipsRequest } from '../types/types';
+import { dataBase, Game, GamePlayer } from '../dataBase/dataBase';
 
 export function addShips(data: string) {
   const { gameId, ships, indexPlayer } = JSON.parse(data) as ShipsRequest;
@@ -22,3 +22,23 @@ export function checkReadyForBattle(game: Game) {
     ? true
     : false;
 }
+
+export function createStartGameResponse(player: GamePlayer) {
+  const payload = {
+    ships: player.ships,
+    currentPlayerIndex: player.id,
+  };
+
+  const response = {
+    type: MessageType.START_GAME,
+    data: JSON.stringify(payload),
+    id: 0,
+  };
+
+  return JSON.stringify(response);
+}
+
+// export function startGame(game: Game) {
+//   const { gameId, players } = game;
+//   players.forEach((player) => {});
+// }

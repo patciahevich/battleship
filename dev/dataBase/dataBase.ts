@@ -16,7 +16,7 @@ export type Room = {
   roomUsers: RoomUser[];
 };
 
-type GamePlayer = {
+export type GamePlayer = {
   id: string;
   ships?: Ship[];
 };
@@ -24,6 +24,7 @@ type GamePlayer = {
 export type Game = {
   gameId: string;
   players: GamePlayer[];
+  currentTurn: null | string;
 };
 
 export type DataBase = {

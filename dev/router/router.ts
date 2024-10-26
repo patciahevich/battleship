@@ -3,7 +3,7 @@ import {
   loginController,
   roomsController,
   shipsController,
-} from '../controller/controller';
+} from '../controller/appController';
 
 export function router(id: string, message: Message) {
   // message.data = string

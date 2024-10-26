@@ -1,14 +1,20 @@
+import { randomUUID } from 'crypto';
+
 import { dataBase } from '../dataBase/dataBase';
 import { clients } from '../clients/clients';
 import { createLoginResponse, login } from '../login/login';
 import {
   addUserToRoom,
   createRoom,
-  createStartGameResponse,
+  createGameResponse,
   updateRoomsResponse,
 } from '../room/room';
-import { randomUUID } from 'crypto';
-import { addShips, checkReadyForBattle } from '../ships/ships';
+import {
+  addShips,
+  checkReadyForBattle,
+  createStartGameResponse,
+} from '../ships/ships';
+import { switchTurn, turnResponse } from '../game/game';
 
 export function loginController(clientId: string, data: string) {
   const client = clients.get(clientId);
@@ -49,24 +55,25 @@ export function roomsController(
       return;
     }
 
-    const firstPlayer = clients.get(roomForGame.roomUsers[0].id);
-    const secondPlayer = clients.get(roomForGame.roomUsers[1].id);
+    const gameId = randomUUID();
+    const firstPlayerId = roomForGame.roomUsers[0].id;
+    const secondPlayerId = roomForGame.roomUsers[1].id;
+
+    const firstPlayer = clients.get(firstPlayerId);
+    const secondPlayer = clients.get(secondPlayerId);
 
     if (!firstPlayer || !secondPlayer) {
       return;
     }
 
-    const gameId = randomUUID();
-    const firstPlayerId = randomUUID();
-    const secondPlayerId = randomUUID();
-
     dataBase.games.push({
       gameId,
       players: [{ id: firstPlayerId }, { id: secondPlayerId }],
+      currentTurn: null,
     });
 
-    firstPlayer.ws.send(createStartGameResponse(gameId, firstPlayerId));
-    secondPlayer.ws.send(createStartGameResponse(gameId, secondPlayerId));
+    firstPlayer.ws.send(createGameResponse(gameId, firstPlayerId));
+    secondPlayer.ws.send(createGameResponse(gameId, secondPlayerId));
 
     clients.forEach((client) => {
       if (client.ws.readyState === WebSocket.OPEN) {
@@ -81,7 +88,19 @@ export function shipsController(data: string) {
   const isReady = currentGame && checkReadyForBattle(currentGame);
 
   if (isReady) {
-    console.log('ready');
-    // start battle
+    // start game!!
+    const firstPlayer = clients.get(currentGame.players[0].id);
+    const secondPlayer = clients.get(currentGame.players[1].id);
+
+    if (!firstPlayer || !secondPlayer) {
+      return;
+    }
+
+    switchTurn(currentGame);
+
+    firstPlayer.ws.send(createStartGameResponse(currentGame.players[0]));
+    firstPlayer.ws.send(turnResponse(currentGame.currentTurn!));
+    secondPlayer.ws.send(createStartGameResponse(currentGame.players[1]));
+    secondPlayer.ws.send(turnResponse(currentGame.currentTurn!));
   }
 }

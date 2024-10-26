@@ -56,7 +56,7 @@ export function addUserToRoom(id: string, data: string) {
   return currentRoom;
 }
 
-export function createStartGameResponse(idGame: string, idPlayer: string) {
+export function createGameResponse(idGame: string, idPlayer: string) {
   const payload = {
     idGame,
     idPlayer,

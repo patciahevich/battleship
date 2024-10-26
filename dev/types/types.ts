@@ -47,7 +47,7 @@ export type ShipsRequest = {
   indexPlayer: number | string;
 };
 
-type StartGameResponse = {
+type StartGamePayload = {
   gameId: string | number;
   ships: Ship[];
   currentPlayerIndex: number | string;
