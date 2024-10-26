@@ -1,5 +1,4 @@
-type PlayerData = {
-  id: string;
+export type PlayerData = {
   name: string;
   password: string;
 };
@@ -15,12 +14,20 @@ export type Room = {
   roomUsers: RoomUser[];
 };
 
+export type Game = {
+  gameId: string;
+  firstPlayerId: string;
+  secondPlayerId: string;
+};
+
 export type DataBase = {
   players: PlayerData[];
   rooms: Room[];
+  games: Game[];
 };
 
 export const dataBase: DataBase = {
   players: [],
   rooms: [],
+  games: [],
 };

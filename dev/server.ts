@@ -1,15 +1,14 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { router } from './router/router';
 import { randomUUID } from 'crypto';
-
-export const clients = new Map<string, WebSocket>();
+import { clients } from './clients/clients';
 
 function startServer() {
   const wss = new WebSocketServer({ port: 3000 });
 
   wss.on('connection', (ws) => {
     const clientId = randomUUID();
-    clients.set(clientId, ws);
+    clients.set(clientId, { ws: ws });
     console.log(`New WebSocket connection: ${clientId}`);
 
     ws.on('message', (message) => {

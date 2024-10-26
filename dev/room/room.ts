@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
 import { dataBase } from '../dataBase/dataBase';
 import { MessageType } from '../types/types';
+import { clients } from '../clients/clients';
 
 function createPlayer(id: string, index: number) {
-  const name =
-    dataBase.players.find((player) => player.id === id)?.name ?? 'player 1';
+  const name = clients.get(id)?.user?.name ?? 'player 1';
   return {
     id,
     name,
@@ -28,7 +28,7 @@ export function updateRoomsResponse() {
   const rooms = {
     type: MessageType.UPDATE_ROOM,
     data: updateRooms(),
-    id: randomUUID(),
+    id: 0,
   };
 
   return JSON.stringify(rooms);
@@ -59,16 +59,16 @@ export function addUserToRoom(id: string, data: string) {
   return currentRoom;
 }
 
-export function createStartGameResponse(idGame: string) {
+export function createStartGameResponse(idGame: string, idPlayer: string) {
   const payload = {
     idGame,
-    idPlayer: randomUUID(),
+    idPlayer,
   };
 
   const response = {
     type: MessageType.CREATE_GAME,
     data: JSON.stringify(payload),
-    id: randomUUID(),
+    id: 0,
   };
 
   return JSON.stringify(response);

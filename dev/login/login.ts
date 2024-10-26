@@ -1,13 +1,13 @@
 import { dataBase } from '../dataBase/dataBase';
 import { MessageType } from '../types/types';
 
-export function login(id: string, name: string, password: string) {
+export function login(name: string, password: string) {
   const player = dataBase.players.find((player) => player.name === name);
 
   if (player) {
     return player.password === password ? true : false;
   } else {
-    dataBase.players.push({ id, name, password });
+    dataBase.players.push({ name, password });
     return true;
   }
 }

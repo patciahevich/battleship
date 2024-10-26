@@ -1,4 +1,5 @@
-import { clients } from '../server';
+import { dataBase } from 'dataBase/dataBase';
+import { clients } from '../clients/clients';
 import { createLoginResponse, login } from '../login/login';
 import {
   addUserToRoom,
@@ -9,19 +10,20 @@ import {
 import { randomUUID } from 'crypto';
 
 export function loginController(clientId: string, data: string) {
-  const ws = clients.get(clientId);
+  const client = clients.get(clientId);
 
-  if (!ws) {
+  if (!client) {
     return;
   }
 
   const { name, password } = JSON.parse(data);
-  const isLogin = login(clientId, name, password);
+  const isLogin = login(name, password);
 
-  ws.send(createLoginResponse(isLogin, name));
+  client.ws.send(createLoginResponse(isLogin, name));
 
   if (isLogin) {
-    ws.send(updateRoomsResponse());
+    client.ws.send(updateRoomsResponse());
+    client.user = { name, password };
     // send winners
   }
 }
@@ -34,9 +36,9 @@ export function roomsController(
   if (flag === 'create') {
     createRoom(clientId);
 
-    clients.forEach((ws) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(updateRoomsResponse());
+    clients.forEach((client) => {
+      if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(updateRoomsResponse());
       }
     });
   } else if (flag === 'update' && data) {
@@ -54,13 +56,17 @@ export function roomsController(
     }
 
     const gameId = randomUUID();
+    const firstPlayerId = randomUUID();
+    const secondPlayerId = randomUUID();
 
-    firstPlayer.send(createStartGameResponse(gameId));
-    secondPlayer.send(createStartGameResponse(gameId));
+    dataBase.games.push({ gameId, firstPlayerId, secondPlayerId });
 
-    clients.forEach((ws) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(updateRoomsResponse());
+    firstPlayer.ws.send(createStartGameResponse(gameId, firstPlayerId));
+    secondPlayer.ws.send(createStartGameResponse(gameId, secondPlayerId));
+
+    clients.forEach((client) => {
+      if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(updateRoomsResponse());
       }
     });
   }
