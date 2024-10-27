@@ -9,6 +9,7 @@ import { createBot } from '../game/gameBot';
 
 export function router(id: string, message: Message) {
   // message.data = string
+  console.log(message.type);
   switch (message.type) {
     case MessageType.REG:
       loginController(id, message.data);
@@ -34,5 +35,6 @@ export function router(id: string, message: Message) {
       break;
     case MessageType.SINGLE_PLAY:
       createBot(id);
+      break;
   }
 }

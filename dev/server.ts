@@ -24,6 +24,20 @@ function startServer() {
     });
   });
 
+  function shutdownWebSocketServer() {
+    clients.forEach((client) => {
+      client.ws.close(1000, 'Server shutting down');
+    });
+
+    wss.close(() => {
+      console.log('WebSocket server closed');
+      process.exit(0);
+    });
+  }
+
+  process.on('SIGINT', shutdownWebSocketServer);
+  process.on('SIGTERM', shutdownWebSocketServer);
+
   console.log('ws server is open');
 }
 
