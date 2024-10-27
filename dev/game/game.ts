@@ -12,7 +12,7 @@ export function switchTurn(game: Game) {
   }
 }
 
-export function turnResponse(id: string) {
+export function turnResponse(id: string | number) {
   const payload = {
     currentPlayer: id,
   };
@@ -42,6 +42,12 @@ export function attackResult(
   return attacked.ships!.find((ship) => ship.checkHit({ x, y }));
 }
 
+export function checkFinish(game: Game, attackerId: string | number) {
+  const attacked = game.players.find((player) => player.id !== attackerId);
+
+  return attacked && attacked.ships?.every((ship) => ship.isDead());
+}
+
 export function createAttackResponse(
   id: string | number,
   position: Position,
@@ -55,6 +61,20 @@ export function createAttackResponse(
 
   const response = {
     type: MessageType.ATTACK,
+    data: JSON.stringify(payload),
+    id: 0,
+  };
+
+  return JSON.stringify(response);
+}
+
+export function createFinishGameResponse(winPlayer: string | number) {
+  const payload = {
+    winPlayer,
+  };
+
+  const response = {
+    type: MessageType.FINISH,
     data: JSON.stringify(payload),
     id: 0,
   };

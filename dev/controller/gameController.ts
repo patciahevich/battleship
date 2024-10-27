@@ -1,6 +1,8 @@
 import {
   attackResult,
+  checkFinish,
   createAttackResponse,
+  createFinishGameResponse,
   switchTurn,
   turnResponse,
 } from '../game/game';
@@ -43,7 +45,11 @@ export function gameController(data: string) {
       responses.push(createAttackResponse(indexPlayer, { x, y }, 'shot'));
     }
   }
-  responses.push(turnResponse(currentGame.currentTurn!));
+
+  const isFinish = checkFinish(currentGame, indexPlayer);
+  isFinish
+    ? responses.push(createFinishGameResponse(indexPlayer))
+    : responses.push(turnResponse(currentGame.currentTurn!));
 
   responses.forEach((response) => {
     firstPlayer.ws.send(response);
