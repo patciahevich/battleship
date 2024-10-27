@@ -20,7 +20,6 @@ function isPlacementValid(
       return false;
     }
 
-    // Проверка на соседние клетки
     for (let dx = -1; dx <= 1; dx++) {
       for (let dy = -1; dy <= 1; dy++) {
         const ax = nx + dx;
