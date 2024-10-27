@@ -3,10 +3,12 @@ import {
   checkFinish,
   createAttackResponse,
   createFinishGameResponse,
+  deleteGame,
   findEnemy,
   getHitData,
   switchTurn,
   turnResponse,
+  updateWinners,
 } from '../game/game';
 import { dataBase } from '../dataBase/dataBase';
 import { clients } from '../clients/clients';
@@ -33,8 +35,6 @@ export function gameController(data: string, flag: 'attack' | 'random') {
     typeof x === 'number' && typeof y === 'number'
       ? { x, y }
       : getRandomCoordinates(enemy);
-
-  console.log(attackCoordinates);
 
   const attackedShip = attackResult(enemy, attackCoordinates);
   const responses = [];
@@ -64,9 +64,14 @@ export function gameController(data: string, flag: 'attack' | 'random') {
   }
 
   const isFinish = checkFinish(enemy);
-  isFinish
-    ? responses.push(createFinishGameResponse(indexPlayer))
-    : responses.push(turnResponse(currentGame.currentTurn!));
+
+  if (isFinish) {
+    deleteGame(gameId);
+    updateWinners(indexPlayer as string);
+    responses.push(createFinishGameResponse(indexPlayer));
+  } else {
+    responses.push(turnResponse(currentGame.currentTurn!));
+  }
 
   responses.forEach((response) => {
     firstPlayer.ws.send(response);

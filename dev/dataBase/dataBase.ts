@@ -4,6 +4,7 @@ import Ship from '../ships/ship';
 export type PlayerData = {
   name: string;
   password: string;
+  wins: number;
 };
 
 type RoomUser = {

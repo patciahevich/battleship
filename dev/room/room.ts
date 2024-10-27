@@ -12,6 +12,17 @@ function createPlayer(id: string, index: number) {
   };
 }
 
+export function createWinsResponse() {
+  const payload = dataBase.players.filter((player) => player.wins > 0);
+  const response = {
+    type: MessageType.UPDATE_WINNERS,
+    data: JSON.stringify(payload),
+    id: 0,
+  };
+
+  return JSON.stringify(response);
+}
+
 export function createRoom(id: string) {
   const newRoom = {
     roomId: randomUUID(),

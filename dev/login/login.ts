@@ -7,7 +7,7 @@ export function login(name: string, password: string) {
   if (player) {
     return player.password === password ? true : false;
   } else {
-    dataBase.players.push({ name, password });
+    dataBase.players.push({ name, password, wins: 0 });
     return true;
   }
 }

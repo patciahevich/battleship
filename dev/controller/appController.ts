@@ -8,6 +8,7 @@ import {
   createRoom,
   createGameResponse,
   updateRoomsResponse,
+  createWinsResponse,
 } from '../room/room';
 import {
   addShips,
@@ -30,8 +31,8 @@ export function loginController(clientId: string, data: string) {
 
   if (isLogin) {
     client.ws.send(updateRoomsResponse());
+    client.ws.send(createWinsResponse());
     client.user = { name, password };
-    // send winners
   }
 }
 

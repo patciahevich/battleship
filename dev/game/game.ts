@@ -1,4 +1,6 @@
-import { Game, GamePlayer } from '../dataBase/dataBase';
+import { clients } from '../clients/clients';
+import { dataBase, Game, GamePlayer } from '../dataBase/dataBase';
+import { createWinsResponse } from '../room/room';
 import {
   AttackRequest,
   AttackStatus,
@@ -89,4 +91,22 @@ export function createFinishGameResponse(winPlayer: string | number) {
   };
 
   return JSON.stringify(response);
+}
+
+export function deleteGame(gameId: string | number) {
+  const currentGameIndex = dataBase.games.findIndex(
+    (game) => game.gameId === gameId,
+  );
+  currentGameIndex && dataBase.games.splice(currentGameIndex, 1);
+}
+
+export function updateWinners(winnerIndex: string) {
+  const winnerName = clients.get(winnerIndex)?.user?.name;
+  const winner = dataBase.players.find((player) => player.name === winnerName);
+
+  if (winner) {
+    winner.wins += 1;
+  }
+
+  clients.forEach((client) => client.ws.send(createWinsResponse()));
 }
