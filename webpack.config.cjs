@@ -1,20 +1,21 @@
-import path from 'path';
-import EslintPlugin from "eslint-webpack-plugin";
+const path = require('path');
+const EslintPlugin = require("eslint-webpack-plugin");
 
-const config  = {
+module.exports = {
   mode: 'production',
-  entry: './dev/index.ts', 
+  entry: './dev/server.ts',
   module: {
     rules: [
       {
         test: /\.ts$/i,
         use: 'ts-loader',
-        exclude: /node_modules/, 
+        exclude: /node_modules/,
       },
     ],
   },
   resolve: {
     fallback: {
+      vm: require.resolve("vm-browserify"),
       stream: require.resolve("stream-browserify"),
       http: require.resolve("stream-http"),
       path: require.resolve("path-browserify"),
@@ -34,5 +35,3 @@ const config  = {
   },
   plugins: [new EslintPlugin({ extensions: "ts" })],
 };
-
-export default config;
