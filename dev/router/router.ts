@@ -25,6 +25,10 @@ export function router(id: string, message: Message) {
       break;
 
     case MessageType.ATTACK:
-      gameController(message.data);
+      gameController(message.data, 'attack');
+      break;
+
+    case MessageType.RANDOM_ATTACK:
+      gameController(message.data, 'random');
   }
 }

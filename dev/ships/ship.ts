@@ -123,7 +123,7 @@ class Ship {
       }
     }
 
-    return surroundingCoords;
+    return surroundingCoords.filter((coord) => coord.x >= 0 && coord.y >= 0);
   }
 }
 

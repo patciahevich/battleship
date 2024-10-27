@@ -73,7 +73,7 @@ type AttackResponse = {
   status: AttackStatus;
 };
 
-type RandomAttackRequest = {
+export type RandomAttackRequest = {
   gameId: number | string;
   indexPlayer: number | string;
 };

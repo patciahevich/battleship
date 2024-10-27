@@ -14,6 +14,7 @@ export function addShips(data: string) {
     (player) => player.id === indexPlayer,
   );
   player && (player.ships = ships.map((ship) => new Ship(ship)));
+  player && (player.hits = []);
 
   return currentGame;
 }

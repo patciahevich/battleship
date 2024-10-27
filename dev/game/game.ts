@@ -1,5 +1,21 @@
-import { Game } from '../dataBase/dataBase';
-import { AttackStatus, MessageType, Position } from '../types/types';
+import { Game, GamePlayer } from '../dataBase/dataBase';
+import {
+  AttackRequest,
+  AttackStatus,
+  MessageType,
+  Position,
+  RandomAttackRequest,
+} from '../types/types';
+
+export function getHitData(data: string, flag: 'attack' | 'random') {
+  if (flag === 'attack') {
+    const { gameId, x, y, indexPlayer } = JSON.parse(data) as AttackRequest;
+    return { gameId, x, y, indexPlayer };
+  } else {
+    const { gameId, indexPlayer } = JSON.parse(data) as RandomAttackRequest;
+    return { gameId, indexPlayer };
+  }
+}
 
 export function switchTurn(game: Game) {
   if (game.currentTurn === null) {
@@ -26,26 +42,19 @@ export function turnResponse(id: string | number) {
   return JSON.stringify(response);
 }
 
-export function attackResult(
-  game: Game,
-  x: number,
-  y: number,
-  attackerId: string,
-) {
-  const attacked = game.players.find((player) => player.id !== attackerId);
-
-  if (!attacked) {
-    // attacked player not found
-    return;
-  }
-
-  return attacked.ships!.find((ship) => ship.checkHit({ x, y }));
+export function findEnemy(game: Game, attackerId: string | number) {
+  return game.players.find((player) => player.id !== attackerId);
 }
 
-export function checkFinish(game: Game, attackerId: string | number) {
-  const attacked = game.players.find((player) => player.id !== attackerId);
+export function attackResult(enemy: GamePlayer, coord: Position) {
+  enemy.hits?.push(coord);
+  return enemy.ships!.find((ship) => ship.checkHit(coord));
+}
 
-  return attacked && attacked.ships?.every((ship) => ship.isDead());
+export function randomAttack() {}
+
+export function checkFinish(enemy: GamePlayer) {
+  return enemy && enemy.ships?.every((ship) => ship.isDead());
 }
 
 export function createAttackResponse(

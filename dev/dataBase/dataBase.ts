@@ -1,3 +1,4 @@
+import { Position } from '../types/types';
 import Ship from '../ships/ship';
 
 export type PlayerData = {
@@ -19,6 +20,7 @@ export type Room = {
 export type GamePlayer = {
   id: string;
   ships?: Ship[];
+  hits?: Position[];
 };
 
 export type Game = {
