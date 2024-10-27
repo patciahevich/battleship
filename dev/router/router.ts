@@ -5,6 +5,7 @@ import {
   shipsController,
 } from '../controller/appController';
 import { gameController } from '../controller/gameController';
+import { createBot } from '../game/gameBot';
 
 export function router(id: string, message: Message) {
   // message.data = string
@@ -30,5 +31,8 @@ export function router(id: string, message: Message) {
 
     case MessageType.RANDOM_ATTACK:
       gameController(message.data, 'random');
+      break;
+    case MessageType.SINGLE_PLAY:
+      createBot(id);
   }
 }

@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { PlayerData } from '../dataBase/dataBase';
 
-type Client = {
+export type Client = {
   ws: WebSocket;
   user?: Partial<PlayerData>;
 };

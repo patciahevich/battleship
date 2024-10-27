@@ -16,6 +16,7 @@ import {
   createStartGameResponse,
 } from '../ships/helpers';
 import { switchTurn, turnResponse } from '../game/game';
+import { placeAllShips } from '../game/randomShips';
 
 export function loginController(clientId: string, data: string) {
   const client = clients.get(clientId);
@@ -86,22 +87,37 @@ export function roomsController(
 
 export function shipsController(data: string) {
   const currentGame = addShips(data);
-  const isReady = currentGame && checkReadyForBattle(currentGame);
+  const bot = currentGame?.players.find((player) => player.id === 'bot');
 
-  if (isReady) {
-    // start game!!
-    const firstPlayer = clients.get(currentGame.players[0].id);
-    const secondPlayer = clients.get(currentGame.players[1].id);
+  if (bot) {
+    bot.ships = placeAllShips();
+    bot.hits = [];
+    const player = currentGame?.players.find((player) => player.id !== 'bot');
 
-    if (!firstPlayer || !secondPlayer) {
-      return;
+    if (player && currentGame) {
+      switchTurn(currentGame);
+      const client = clients.get(player.id);
+      client && client.ws.send(createStartGameResponse(player));
+      client && client.ws.send(turnResponse(currentGame.currentTurn!));
     }
+  } else {
+    const isReady = currentGame && checkReadyForBattle(currentGame);
 
-    switchTurn(currentGame);
+    if (isReady) {
+      // start game!!
+      const firstPlayer = clients.get(currentGame.players[0].id);
+      const secondPlayer = clients.get(currentGame.players[1].id);
 
-    firstPlayer.ws.send(createStartGameResponse(currentGame.players[0]));
-    firstPlayer.ws.send(turnResponse(currentGame.currentTurn!));
-    secondPlayer.ws.send(createStartGameResponse(currentGame.players[1]));
-    secondPlayer.ws.send(turnResponse(currentGame.currentTurn!));
+      if (!firstPlayer || !secondPlayer) {
+        return;
+      }
+
+      switchTurn(currentGame);
+
+      firstPlayer.ws.send(createStartGameResponse(currentGame.players[0]));
+      firstPlayer.ws.send(turnResponse(currentGame.currentTurn!));
+      secondPlayer.ws.send(createStartGameResponse(currentGame.players[1]));
+      secondPlayer.ws.send(turnResponse(currentGame.currentTurn!));
+    }
   }
 }

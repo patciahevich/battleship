@@ -1,6 +1,5 @@
 import Ship from '../ships/ship';
 
-// login
 export type LoginRequest = {
   name: string;
   password: string;
@@ -13,15 +12,6 @@ export type LoginResponse = {
   errorText: string;
 };
 
-//winners
-type Winner = {
-  name: string;
-  wins: number;
-};
-
-type Winners = Winner[];
-
-// room
 export type IndexRoom = { indexRoom: string | number };
 
 export type CreateGameResponse = {
@@ -29,7 +19,6 @@ export type CreateGameResponse = {
   idPlayer: number | string;
 };
 
-//ships
 export type ShipType = 'small' | 'medium' | 'large' | 'huge';
 
 export type Position = {
@@ -50,14 +39,6 @@ export type ShipsRequest = {
   indexPlayer: number | string;
 };
 
-type StartGamePayload = {
-  gameId: string | number;
-  ships: Ship[];
-  currentPlayerIndex: number | string;
-};
-
-//game
-
 export type AttackStatus = 'miss' | 'killed' | 'shot';
 
 export type AttackRequest = {
@@ -67,12 +48,6 @@ export type AttackRequest = {
   indexPlayer: number | string;
 };
 
-type AttackResponse = {
-  position: Position;
-  currentPlayer: number | string;
-  status: AttackStatus;
-};
-
 export type RandomAttackRequest = {
   gameId: number | string;
   indexPlayer: number | string;
@@ -80,11 +55,6 @@ export type RandomAttackRequest = {
 
 type TurnInfo = {
   currentPlayer: number | string;
-};
-
-// finish game
-type FinishResponse = {
-  winPlayer: number | string;
 };
 
 // message
@@ -101,9 +71,8 @@ export enum MessageType {
   RANDOM_ATTACK = 'randomAttack',
   TURN = 'turn',
   FINISH = 'finish',
+  SINGLE_PLAY = 'single_play',
 }
-
-type Payload = LoginRequest | LoginResponse | IndexRoom;
 
 export type Message = {
   type: MessageType;
