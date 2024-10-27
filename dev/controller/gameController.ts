@@ -16,13 +16,11 @@ export function gameController(data: string, flag: 'attack' | 'random') {
   const currentGame = dataBase.games.find((game) => game.gameId === gameId);
 
   if (!currentGame || indexPlayer !== currentGame.currentTurn) {
-    console.log('no turn', currentGame, indexPlayer);
     return;
   }
 
   const players: Client[] = [];
   const bot = currentGame.players.find((player) => player.id === 'bot');
-  const realPlayer = currentGame.players.find((player) => player.id !== 'bot');
 
   if (bot) {
     const playerData = currentGame.players.find(
