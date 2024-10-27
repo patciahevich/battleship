@@ -80,6 +80,7 @@ export function createAttackResponse(
 }
 
 export function createFinishGameResponse(winPlayer: string | number) {
+  console.log('win');
   const payload = {
     winPlayer,
   };
@@ -109,4 +110,23 @@ export function updateWinners(winnerIndex: string) {
   }
 
   clients.forEach((client) => client.ws.send(createWinsResponse()));
+}
+
+export function technicalDefeat(id: string) {
+  const games = dataBase.games.filter((game) =>
+    game.players.find((player) => player.id === id),
+  );
+
+  if (games) {
+    games.forEach((game) => {
+      const enemy = findEnemy(game, id);
+
+      if (enemy) {
+        const winner = clients.get(enemy.id);
+        winner && winner.ws.send(createFinishGameResponse(enemy.id));
+        updateWinners(enemy.id);
+        deleteGame(game.gameId);
+      }
+    });
+  }
 }

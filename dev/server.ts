@@ -2,6 +2,7 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { router } from './router/router';
 import { randomUUID } from 'crypto';
 import { clients } from './clients/clients';
+import { technicalDefeat } from './game/game';
 
 function startServer() {
   const wss = new WebSocketServer({ port: 3000 });
@@ -18,6 +19,8 @@ function startServer() {
 
     ws.on('close', () => {
       console.log('Client disconnected');
+      technicalDefeat(clientId);
+      clients.delete(clientId);
     });
   });
 
