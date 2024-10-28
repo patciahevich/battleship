@@ -5,9 +5,10 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "concurrently \"npm run start:http\" \"npm run start:ws\"",
+        "start": "concurrently \"npm run start:http\" \"npm run start:nodemon\"",
         "start:http": "node ./index.js",
-        "start:ws": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm  ./dev/server.ts",
+        "start:ws": "node ./server/ws.js",
+        "start:nodemon": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm  ./dev/server.ts",
         "format": "prettier --write dev/**/*.ts",
         "lint": "eslint ./dev/**/*.ts --fix",
         "build": "webpack --config webpack.config.mjs"
@@ -16,10 +17,14 @@
     "keywords": [],
     "license": "ISC",
     "devDependencies": {
+        "@babel/core": "^7.26.0",
+        "@babel/eslint-parser": "^7.25.9",
+        "@babel/preset-env": "^7.26.0",
         "@eslint/js": "^9.13.0",
         "@types/node": "^22.7.9",
         "@typescript-eslint/eslint-plugin": "^8.11.0",
         "@typescript-eslint/parser": "^8.11.0",
+        "babel-loader": "^9.2.1",
         "concurrently": "^9.0.1",
         "eslint": "^9.13.0",
         "eslint-config-prettier": "^9.1.0",

@@ -11,8 +11,8 @@ const config = {
   entry: "./dev/server.ts",
   target: "node",
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: "ws.js",
+    path: path.resolve(__dirname, "server"),
   },
   resolve: {
     extensions: [".ts", ".js"],
@@ -37,9 +37,12 @@ const config = {
   },
 
   plugins: [new EslintPlugin({ 
-    context: path.resolve(__dirname, '../'),
-    extensions: "ts" ,
-    overrideConfigFile: path.resolve(__dirname, './.eslint.config.js'),
+    fix: true,
+    files: [ './dev' ],
+    context: path.resolve(__dirname, './'),
+    extensions: [ 'tsx', 'ts', 'jsx', 'js' ],
+    overrideConfigFile: path.resolve(__dirname, './eslint.config.json'),
+    errorOnUnmatchedPattern: false,
   })],
 };
 
