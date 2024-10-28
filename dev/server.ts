@@ -1,11 +1,13 @@
-import { WebSocketServer, WebSocket } from 'ws';
+import 'dotenv/config';
+import { WebSocketServer } from 'ws';
 import { router } from './router/router';
 import { randomUUID } from 'crypto';
 import { clients } from './clients/clients';
 import { technicalDefeat } from './game/game';
 
+const PORT = Number(process.env.PORT) || 3000;
 function startServer() {
-  const wss = new WebSocketServer({ port: 3000 });
+  const wss = new WebSocketServer({ port: PORT });
 
   wss.on('connection', (ws) => {
     const clientId = randomUUID();
@@ -38,7 +40,7 @@ function startServer() {
   process.on('SIGINT', shutdownWebSocketServer);
   process.on('SIGTERM', shutdownWebSocketServer);
 
-  console.log('ws server is open');
+  console.log(`Start ws server on the ${PORT} port!`);
 }
 
 startServer();

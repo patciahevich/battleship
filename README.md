@@ -38,7 +38,9 @@ A simple multiplayer Battleship game built with Node.js and WebSockets. Players 
 
     ```
 
-4.  Run the game
+4.  Rename `.env.example` to the `.env`
+
+5.  Run the game
 
     ```
     npm run start
