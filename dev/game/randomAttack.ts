@@ -3,9 +3,9 @@ import { GamePlayer } from '../dataBase/dataBase';
 const size = 10;
 
 export function getRandomCoordinates(enemy: GamePlayer) {
-  let x = Math.floor(Math.random() * size);
-  let y = Math.floor(Math.random() * size);
-  let isUsedCoord =
+  const x = Math.floor(Math.random() * size);
+  const y = Math.floor(Math.random() * size);
+  const isUsedCoord =
     enemy.hits && enemy.hits.find((hit) => hit.x === x && hit.y === y);
 
   if (isUsedCoord) {

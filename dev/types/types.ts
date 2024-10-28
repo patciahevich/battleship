@@ -53,10 +53,6 @@ export type RandomAttackRequest = {
   indexPlayer: number | string;
 };
 
-type TurnInfo = {
-  currentPlayer: number | string;
-};
-
 // message
 export enum MessageType {
   REG = 'reg',

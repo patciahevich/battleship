@@ -1,43 +1,15 @@
-import { defineConfig } from 'eslint-define-config';
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
 
-export default defineConfig({
-    env: {
-        browser: true,
-        es2021: true,
-        node: true,
-    },
-    extends: [
-        'eslint:recommended',
-        'plugin:import/errors',
-        'plugin:import/warnings',
-        'plugin:prettier/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:import/typescript',
-    ],
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-    },
-    plugins: ['@typescript-eslint', 'import'],
+export default [
+  { files: ["**/*.{js,mjs,cjs,ts}"] },
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
     rules: {
-        '@typescript-eslint/no-explicit-any': 2,
-        'implicit-arrow-linebreak': 0,
-        'no-use-before-define': 'off',
-        '@typescript-eslint/no-use-before-define': 'error',
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            {
-                js: 'never',
-                jsx: 'never',
-                ts: 'never',
-                tsx: 'never',
-            },
-        ],
+      '@typescript-eslint/no-unused-expressions': 'off' 
     },
-    ignores: [
-        '**/node_modules/**',
-        '**/dist/**',
-    ],
-});
+  },
+];
