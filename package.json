@@ -5,9 +5,9 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "start": "node ./index.js && npm run start:server",
-        "start:dev": "nodemon ./index.js",
-        "start:server": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm  ./dev/server.ts",
+        "start": "concurrently \"npm run start:http\" \"npm run start:ws\"",
+        "start:http": "node ./index.js",
+        "start:ws": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm  ./dev/server.ts",
         "format": "prettier --write dev/**/*.ts",
         "lint": "eslint ./dev/**/*.ts --fix",
         "build": "webpack --config webpack.config.mjs"
@@ -20,6 +20,7 @@
         "@types/node": "^22.7.9",
         "@typescript-eslint/eslint-plugin": "^8.11.0",
         "@typescript-eslint/parser": "^8.11.0",
+        "concurrently": "^9.0.1",
         "eslint": "^9.13.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-define-config": "^2.1.0",
