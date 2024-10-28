@@ -81,3 +81,20 @@ export function createGameResponse(idGame: string, idPlayer: string) {
 
   return JSON.stringify(response);
 }
+
+export function removeRooms(firstPlayerId: string, secondPlayerId?: string) {
+  const roomsIndexes = dataBase.rooms.reduce((acc: number[], room, index) => {
+    if (
+      room.roomUsers.find(
+        (user) => user.id === firstPlayerId || user.id === secondPlayerId,
+      )
+    ) {
+      acc.push(index);
+    }
+    return acc;
+  }, []);
+
+  if (roomsIndexes) {
+    roomsIndexes.forEach((roomIndex) => dataBase.rooms.splice(roomIndex, 1));
+  }
+}

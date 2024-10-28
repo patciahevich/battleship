@@ -8,6 +8,7 @@ import {
   createGameResponse,
   updateRoomsResponse,
   createWinsResponse,
+  removeRooms,
 } from '../room/room';
 import {
   addShips,
@@ -72,6 +73,8 @@ export function roomsController(
       players: [{ id: firstPlayerId }, { id: secondPlayerId }],
       currentTurn: null,
     });
+
+    removeRooms(firstPlayerId, secondPlayerId);
 
     firstPlayer.ws.send(createGameResponse(gameId, firstPlayerId));
     secondPlayer.ws.send(createGameResponse(gameId, secondPlayerId));
